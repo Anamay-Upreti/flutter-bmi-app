@@ -7,60 +7,124 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static final wtController = TextEditingController();
-  static final ftController = TextEditingController();
-  static final inController = TextEditingController();
-
+  // Controllers should be static if you want them to persist across widget rebuilds, otherwise, they should be instance variables.
+  static final TextEditingController wtController = TextEditingController();
+  static final TextEditingController ftController = TextEditingController();
+  static final TextEditingController inController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Container(
-            padding: const EdgeInsets.all(20.0), // Optional: add some padding
-            color: Colors.blueAccent, // Background color for the text
-            child: const Text(
-              'yourBMI',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white, // Text color
-              ),
+      home: BMIHome(),
+    );
+  }
+}
+
+class BMIHome extends StatefulWidget {
+  const BMIHome({super.key});
+
+  @override
+  _BMIHomeState createState() => _BMIHomeState();
+}
+
+class _BMIHomeState extends State<BMIHome> {
+  String result = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Container(
+          height: 100, // Height of the navbar-like background
+          width: double.infinity, // Full width of the app bar
+          alignment: Alignment.center, // Center the text inside the container
+          color: Colors.blueAccent, // Background color for the text
+          child: const Text(
+            'yourBMI',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white, // Text color
             ),
           ),
         ),
-        body: Column(
-          children: [
-            const Text(
-              'BMI',
-              style: TextStyle(fontSize: 34, fontWeight: FontWeight.w700,),
-            ),
-            TextField(
-              controller: wtController,
-              decoration: const InputDecoration(
-                label: Text('Enter Your Weight in Kgs'),
-                prefixIcon: Icon(Icons.line_weight_outlined),
+        backgroundColor: Colors.transparent, // Make the app bar itself transparent
+        elevation: 0, // Remove the shadow under the app bar
+      ),
+      body: Center(
+        child: Container(
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'BMI',
+                style: TextStyle(fontSize: 34, fontWeight: FontWeight.w700),
               ),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: ftController,
-              decoration: const InputDecoration(
-                label: Text('Enter Your Height in ft'),
-                prefixIcon: Icon(Icons.height),
+              const SizedBox(height: 21),
+              TextField(
+                controller: MyApp.wtController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Your Weight in Kgs',
+                  prefixIcon: Icon(Icons.line_weight_outlined),
+                ),
+                keyboardType: TextInputType.number,
               ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 11),
-            TextField(
-              controller: inController,
-              decoration: const InputDecoration(
-                label: Text('Enter Your height in inch'),
-                prefixIcon: Icon(Icons.height),
+              const SizedBox(height: 21),
+              TextField(
+                controller: MyApp.ftController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Your Height in ft',
+                  prefixIcon: Icon(Icons.height),
+                ),
+                keyboardType: TextInputType.number,
               ),
-              keyboardType: TextInputType.number,
-            ),
-          ],
+              const SizedBox(height: 21),
+              TextField(
+                controller: MyApp.inController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Your Height in inch',
+                  prefixIcon: Icon(Icons.height),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 21),
+              ElevatedButton(
+                onPressed: () {
+                  var wt = MyApp.wtController.text.trim();
+                  var ft = MyApp.ftController.text.trim();
+                  var inch = MyApp.inController.text.trim();
+
+                  if (wt.isNotEmpty && ft.isNotEmpty && inch.isNotEmpty) {
+                    var iWt = int.parse(wt);
+                    var iFt = int.parse(ft);
+                    var iInch = int.parse(inch);
+
+                    var tInch = (iFt * 12) + iInch;
+
+                    var tCm = tInch * 2.54;
+                    var tM = tCm / 100;
+
+                    var bmi = iWt / (tM * tM);
+
+                    setState(() {
+                      result = "Your BMI is ${bmi.toStringAsFixed(2)}";
+                    });
+                  } else {
+                    setState(() {
+                      result = "Please fill all the required fields!";
+                    });
+                  }
+                },
+                child: const Text('Calculate'),
+              ),
+              const SizedBox(height: 21),
+              Text(
+                result,
+                style: const TextStyle(fontSize: 16),
+              )
+            ],
+          ),
         ),
       ),
     );
