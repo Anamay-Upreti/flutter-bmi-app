@@ -35,6 +35,7 @@ class _BMIHomeState extends State<BMIHome> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
+          
           height: 100, // Height of the navbar-like background
           width: double.infinity, // Full width of the app bar
           alignment: Alignment.center, // Center the text inside the container
@@ -53,6 +54,7 @@ class _BMIHomeState extends State<BMIHome> {
       ),
       body: Center(
         child: Container(
+          color: Colors.orange,
           width: 300,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -90,6 +92,7 @@ class _BMIHomeState extends State<BMIHome> {
               ),
               const SizedBox(height: 21),
               ElevatedButton(
+
                 onPressed: () {
                   var wt = MyApp.wtController.text.trim();
                   var ft = MyApp.ftController.text.trim();
@@ -108,7 +111,7 @@ class _BMIHomeState extends State<BMIHome> {
                     var bmi = iWt / (tM * tM);
 
                     setState(() {
-                      result = "Your BMI is ${bmi.toStringAsFixed(2)}";
+                      result = "Your BMI is ${bmi.toStringAsFixed(4)}";
                     });
                   } else {
                     setState(() {
@@ -117,11 +120,13 @@ class _BMIHomeState extends State<BMIHome> {
                   }
                 },
                 child: const Text('Calculate'),
+
+
               ),
               const SizedBox(height: 21),
               Text(
                 result,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 19),
               )
             ],
           ),
