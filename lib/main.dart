@@ -64,7 +64,11 @@ class _BMIHomeState extends State<BMIHome> {
               children: [
                 const Text(
                   'BMI',
-                  style: TextStyle(fontSize: 34, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white, // Set text color to white
+                  ),
                 ),
                 const SizedBox(height: 21),
                 TextField(
@@ -112,15 +116,15 @@ class _BMIHomeState extends State<BMIHome> {
                       var bmi = iWt / (tM * tM);
                       var msg = "";
 
-                      if(bmi>25){
-                         msg = "You are overweight!";
-                         bgColor = Colors.red.shade800;
-                      }else if(bmi <18){
-                         msg = "You are Underweight!";
-                         bgColor = Colors.blueAccent.shade400;
-                      }else{
-                         msg= "You are Healty ! Going great!";
-                         bgColor= Colors.green.shade400;
+                      if (bmi > 25) {
+                        msg = "You are overweight!";
+                        bgColor = Colors.red.shade800;
+                      } else if (bmi < 18) {
+                        msg = "You are Underweight!";
+                        bgColor = Colors.blueAccent.shade400;
+                      } else {
+                        msg = "You are Healthy! Going great!";
+                        bgColor = Colors.green.shade400;
                       }
                       setState(() {
                         result = "$msg \n BMI is ${bmi.toStringAsFixed(4)}";
@@ -139,12 +143,21 @@ class _BMIHomeState extends State<BMIHome> {
                       });
                     }
                   },
-                  child: const Text('Calculate'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Set button color to blue
+                  ),
+                  child: const Text(
+                    'Calculate',
+                    style: TextStyle(color: Colors.white), // Set button text color to white
+                  ),
                 ),
                 const SizedBox(height: 21),
                 Text(
                   result,
-                  style: const TextStyle(fontSize: 19),
+                  style: const TextStyle(
+                    fontSize: 19,
+                    color: Colors.white, // Set result text color to white
+                  ),
                 )
               ],
             ),
